@@ -1,88 +1,88 @@
 <?php
-class TrickyBytes_Hero_Section {
+class HeroSectionCustomizer {
     public function __construct() {
-        add_action('customize_register', array($this, 'register_customizer_settings'));
+        add_action('customize_register', [$this, 'register_hero_section_settings']);
     }
 
-    public function register_customizer_settings($wp_customize) {
-        $wp_customize->add_section('trickybytes_hero_section', array(
-            'title'    => __('Hero Section', 'trickybytes'),
+    public function register_hero_section_settings($wp_customize) {
+        // Add Section for Hero Section
+        $wp_customize->add_section('hero_section', array(
+            'title'    => __('Hero Section', 'your-theme'),
             'priority' => 30,
         ));
 
-        // Background Image
-        $wp_customize->add_setting('hero_bg_image', array(
-            'default'   => get_template_directory_uri() . '/core/assets/img/hero/hero-bg.jpg',
-            'transport' => 'refresh',
-            'sanitize_callback' => 'esc_url_raw',
-        ));
-        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hero_bg_image', array(
-            'label'   => __('Background Image', 'trickybytes'),
-            'section' => 'trickybytes_hero_section',
-            'settings' => 'hero_bg_image',
-        )));
+        // Hero Title
+        $this->add_text_control($wp_customize, 'hero_title', 'Hero Title', 'Business Innovation With IT Services expertise');
 
-        // Subtitle
-        $wp_customize->add_setting('hero_subtitle', array(
-            'default'   => 'Everything You Need to Create a Website',
-            'transport' => 'refresh',
-            'sanitize_callback' => 'sanitize_text_field',
-        ));
-        $wp_customize->add_control('hero_subtitle', array(
-            'label'   => __('Subtitle', 'trickybytes'),
-            'section' => 'trickybytes_hero_section',
-            'type'    => 'text',
-        ));
+        // Hero Subtitle
+        $this->add_text_control($wp_customize, 'hero_subtitle', 'Hero Subtitle', 'Everything You Need to Create a Website');
 
-        // Main Title
-        $wp_customize->add_setting('hero_title', array(
-            'default'   => 'Business Innovation With IT Services Expertise',
-            'transport' => 'refresh',
-            'sanitize_callback' => 'sanitize_text_field',
-        ));
-        $wp_customize->add_control('hero_title', array(
-            'label'   => __('Hero Title', 'trickybytes'),
-            'section' => 'trickybytes_hero_section',
-            'type'    => 'text',
-        ));
-
-        // Button Text
-        $wp_customize->add_setting('hero_button_text', array(
-            'default'   => 'Get Started',
-            'transport' => 'refresh',
-            'sanitize_callback' => 'sanitize_text_field',
-        ));
-        $wp_customize->add_control('hero_button_text', array(
-            'label'   => __('Button Text', 'trickybytes'),
-            'section' => 'trickybytes_hero_section',
-            'type'    => 'text',
-        ));
-
-        // Button Link
-        $wp_customize->add_setting('hero_button_link', array(
-            'default'   => '#',
-            'transport' => 'refresh',
-            'sanitize_callback' => 'esc_url_raw',
-        ));
-        $wp_customize->add_control('hero_button_link', array(
-            'label'   => __('Button Link', 'trickybytes'),
-            'section' => 'trickybytes_hero_section',
-            'type'    => 'url',
-        ));
+        // Hero Button Text & Link
+        $this->add_text_control($wp_customize, 'hero_button_text', 'Button Text', 'Get Started');
+        $this->add_url_control($wp_customize, 'hero_button_link', 'Button Link', 'contact.html');
 
         // Hero Image
-        $wp_customize->add_setting('hero_image', array(
-            'default'   => get_template_directory_uri() . '/core/assets/img/hero/heroThumb1_1.png',
-            'transport' => 'refresh',
+        $this->add_image_control($wp_customize, 'hero_image', 'Hero Image', '/core/assets/img/hero/heroThumb1_1.png');
+
+        // Trustpilot Section
+        $this->add_image_control($wp_customize, 'trustpilot_image', 'Trustpilot Image', '/core/assets/img/icon/starIcon1_1.svg');
+        $this->add_text_control($wp_customize, 'trustpilot_text', 'Trustpilot Reviews Text', '450+ reviews');
+
+        // Google Reviews Section
+        $this->add_image_control($wp_customize, 'google_image', 'Google Reviews Image', '/core/assets/img/icon/starIcon1_1.svg');
+        $this->add_text_control($wp_customize, 'google_reviews_text', 'Google Reviews Text', '450+ reviews');
+
+        // Checklist Items
+        $checklist_items = [
+            'checklist_1' => 'Deployment and Support',
+            'checklist_2' => 'Discovery and Analysis',
+            'checklist_3' => 'Flexibility and Adaptability',
+            'checklist_4' => 'Competitive Advantage'
+        ];
+
+        foreach ($checklist_items as $key => $default_text) {
+            $this->add_text_control($wp_customize, $key, __('Checklist Item', 'your-theme') . ' ' . substr($key, -1), $default_text);
+        }
+    }
+
+    // Helper function for text input fields
+    private function add_text_control($wp_customize, $id, $label, $default) {
+        $wp_customize->add_setting($id, array(
+            'default'   => $default,
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+        $wp_customize->add_control($id, array(
+            'label'    => __($label, 'your-theme'),
+            'section'  => 'hero_section',
+            'type'     => 'text',
+        ));
+    }
+
+    // Helper function for URL input fields
+    private function add_url_control($wp_customize, $id, $label, $default) {
+        $wp_customize->add_setting($id, array(
+            'default'   => $default,
+            'sanitize_callback' => 'esc_url',
+        ));
+        $wp_customize->add_control($id, array(
+            'label'    => __($label, 'your-theme'),
+            'section'  => 'hero_section',
+            'type'     => 'url',
+        ));
+    }
+
+    // Helper function for image upload fields
+    private function add_image_control($wp_customize, $id, $label, $default) {
+        $wp_customize->add_setting($id, array(
+            'default'   => get_template_directory_uri() . $default,
             'sanitize_callback' => 'esc_url_raw',
         ));
-        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hero_image', array(
-            'label'   => __('Hero Image', 'trickybytes'),
-            'section' => 'trickybytes_hero_section',
-            'settings' => 'hero_image',
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, $id, array(
+            'label'    => __($label, 'your-theme'),
+            'section'  => 'hero_section',
         )));
     }
 }
 
-// Initialize Hero Section Class
-new TrickyBytes_Hero_Section();
+// Initialize the class
+new HeroSectionCustomizer();

@@ -15,3 +15,4 @@ require_once TRICKYBYTES_INC . 'widgets.php';
 require_once TRICKYBYTES_INC . 'footer_customizer.php';
 require_once TRICKYBYTES_INC . 'header_customizer.php';
 require_once TRICKYBYTES_ADMIN_CUSTOMIZATION . 'tb-hero-admin.php';
+require_once TRICKYBYTES_ADMIN_CUSTOMIZATION . 'tb-brand-admin.php';

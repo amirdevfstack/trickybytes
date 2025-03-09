@@ -2,7 +2,7 @@
 <!-- Hero Section    S T A R T -->
 <?php get_template_part('core/public/templates/tb-hero'); ?>
 <!-- Brand Slider Section    S T A R T -->
-<?php get_template_part('core/public/templates/tb-brand-slider'); ?>
+<?php get_template_part('core/public/templates/tb-brand'); ?>
 <!-- Service Section    S T A R T -->
 <?php get_template_part('core/public/templates/tb-service'); ?>
 <!-- About Section    S T A R T -->
